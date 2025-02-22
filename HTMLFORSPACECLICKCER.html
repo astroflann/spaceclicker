@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <style>
+    body {
+      background-color: #000000;
+      color: #ffffff;
+    }
+    #themer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 15 20px;
+      background-color: gray;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  #themer:hover {
+    background-color: darkgray;
+  }
+  #clickers {
+    position: relative;
+    border-radius: 5px;
+    padding: 15 20px;
+    color: black;
+    border: none;
+    cursor: pointer;
+  }
+  #cps {
+    position: relative;
+    border-radius: 5px;
+    padding: 15 20px;
+    color: black;
+    border: none;
+    cursor: pointer;
+    }
+  #clickers:hover {
+    background-color: darkgray;
+  }
+  #cps:hover {
+    background-color: darkgray;
+  }
+  </style>
+  <h1>Space Clicker</h1>
+  <p id="output">0</p>
+  <h1>Item Shop (clicks = C$)</h1>
+  <button id="cps" onclick="cpsupgrade();">Upgrade C$ per click (<span id="output2">100</span>C$)</button>
+  <button id="clickers" onclick="upgrade_clicker();">Buy a clicker (<span id="output3">500</span>C$)</button>
+  <button id="themer" onclick="change_darklight();">Toggle Theme</button>
+  <script>
+    let count = 0;
+    let cps = 1;
+    let cpsupgradecost = 100;
+    let clickercost = 500;
+    let clickers = 0;
+    let devmode = true;
+    let theme = 1;
+    let keyEvent = "keyup"
+    const output = document.getElementById("output");
+    const output2 = document.getElementById("output2");
+    const output3 = document.getElementById("output3");
+    function devcheck() {
+        if (devmode === true) {
+            cps = 100;
+            keyEvent = "keydown";
+    }
+        }
+    function clickerclick() {
+      count += cps * clickers;
+      output.innerHTML = count;
+    }
+    function cpsupgrade() {
+      if (count >= cpsupgradecost) {
+        count -= cpsupgradecost;
+        cps += 1;
+        cpsupgradecost *= 2;
+        output.innerHTML = count;
+        output2.innerHTML = cpsupgradecost;
+      }
+    }
+    function upgrade_clicker() {
+      if (count >= clickercost) {
+        count -= clickercost;
+        clickercost *= 1.5
+        clickercost = Math.round(clickercost);
+        clickers++;
+        output.innerHTML = count;
+        output3.innerHTML = clickercost;
+      }
+    }
+      function change_darklight() {
+        if (theme === 1) {
+          theme = 0;
+          document.body.style.backgroundColor =  "white";
+          document.body.style.color = "black";
+        } else {
+          theme = 1;
+          document.body.style.backgroundColor = "black";
+          document.body.style.color = "white";
+        }
+
+      }
+    document.addEventListener(keyEvent, (event) => {
+      if (event.code === "Space") {
+        count = count + cps;
+        output.textContent = count;
+      }
+    });
+    setInterval(clickerclick, 500);
+    if (devmode === true) {
+      setInterval(() => {
+        devmode = false;
+      }, 10000);
+    }
+      setInterval(devcheck(), 100);
+  </script>
+</body>
+
+</html>
